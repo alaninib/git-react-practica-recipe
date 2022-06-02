@@ -8,16 +8,16 @@ export default function Cuisine(){
   const params = useParams();
 
   const getCuisine = async (name)=> {
-    const check = localStorage.getItem(`${name}`);
-    if(check){
-      setCuisine(JSON.parse(check));
+    const check = JSON.parse(localStorage.getItem(`${name}`)) || [];
+    if(check.length > 0){
+      setCuisine(check);
     }else{
       try {
         const response = await fetch(`https://api.spoonacular.com/recipes/complexSearch?apiKey=${process.env.REACT_APP_API_KEY}&cuisine=${name}`);
         if(!response.ok) throw new Error(`${response.status} - ${response.statusText}`);
         else{
           const data = await response.json();
-          console.log(data.results)
+          console.log(data)
           localStorage.setItem(`${name}`, JSON.stringify(data.results));
           setCuisine(data.results);
         }
@@ -28,7 +28,6 @@ export default function Cuisine(){
   }
 
   useEffect(() => {
-    console.log(params.type)
     getCuisine(params.type);
   }, [params.type])
 
@@ -39,8 +38,10 @@ export default function Cuisine(){
         const {id, title, image, imageType } = item;
         return(
           <Card key={id}>
-            <img src={image} alt={title.substring(0, title.indexOf(' '))}/>
-            <h4>title</h4>
+            <Link to={'/recipe/' + id}>
+              <img src={image} alt={title.substring(0, title.indexOf(' '))}/>
+              <h4>{title}</h4>
+            </Link>
           </Card>
         )
       })}

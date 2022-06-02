@@ -10,7 +10,13 @@ html{
 }
 
 body{
-  margin: 0% 20%;
+  padding: 0% 9%;
+}
+
+@media screen and (max-width: 450px){
+  body{
+    padding: 2rem;
+  }
 }
 
 h4{
@@ -26,3 +32,4 @@ h3{
 a{
   color: rgb(56,56,56);
 }
+
